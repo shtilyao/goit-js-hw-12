@@ -50,6 +50,11 @@ async function onSubmit(event) {
 
         if (currentPage < totalPages) {
             showLoadMoreButton();
+        } else {
+
+            iziToast.info({
+                message: "We're sorry, but you've reached the end of search results.",
+            });
         }
 
         form.reset();
@@ -67,6 +72,7 @@ async function onSubmit(event) {
 async function onLoadMore() {
     currentPage += 1;
 
+    hideLoadMoreButton();
     showLoader();
 
     try {
@@ -85,7 +91,9 @@ async function onLoadMore() {
 
         const totalPages = Math.ceil(data.totalHits / 15);
 
-        if (currentPage >= totalPages) {
+        if (currentPage < totalPages) {
+            showLoadMoreButton();
+        } else {
             hideLoadMoreButton();
 
             iziToast.info({
